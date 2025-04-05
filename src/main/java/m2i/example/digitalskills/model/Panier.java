@@ -15,14 +15,17 @@ public class Panier {
     private Utilisateur user;
 
     @OneToMany
-    private List<Produit> products;
+    private List<Produit> produits;
 
-    private BigDecimal totalPrice;
+    @Column(name = "prix_total")
 
-    public Panier(Long id, Utilisateur user, List<Produit> products) {
+    private BigDecimal prixTotal;
+
+    public Panier(Long id, Utilisateur user, List<Produit> produits, BigDecimal prixTotal) {
         this.id = id;
         this.user = user;
-        this.products = products;
+        this.produits = produits;
+        this.prixTotal = prixTotal;
     }
 
     public Panier() {
@@ -44,11 +47,19 @@ public class Panier {
         this.user = user;
     }
 
-    public List<Produit> getProducts() {
-        return products;
+    public List<Produit> getProduits() {
+        return produits;
     }
 
-    public void setProducts(List<Produit> products) {
-        this.products = products;
+    public void setProduits(List<Produit> produits) {
+        this.produits = produits;
+    }
+
+    public BigDecimal getPrixTotal() {
+        return prixTotal;
+    }
+
+    public void setPrixTotal(BigDecimal prixTotal) {
+        this.prixTotal = prixTotal;
     }
 }

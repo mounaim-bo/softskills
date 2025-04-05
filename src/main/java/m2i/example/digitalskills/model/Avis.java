@@ -14,15 +14,15 @@ public class Avis {
     @ManyToOne
     private Produit produit;
 
-    private Integer rating;
-    private String comment;
+    private Integer evaluation;
+    private String commentaire;
 
-    public Avis(Long id, Utilisateur user, Produit produit, Integer rating, String comment) {
+    public Avis(Long id, Utilisateur user, Produit produit, Integer evaluation, String commentaire) {
         this.id = id;
         this.user = user;
         this.produit = produit;
-        this.rating = rating;
-        this.comment = comment;
+        this.evaluation = evaluation;
+        this.commentaire = commentaire;
     }
 
     public Avis() {
@@ -52,19 +52,19 @@ public class Avis {
         this.produit = produit;
     }
 
-    public Integer getRating() {
-        return rating;
+    public Integer getEvaluation() {
+        return evaluation;
     }
 
-    public void setRating(Integer rating) {
-        this.rating = rating;
+    public void setEvaluation(Integer evaluation) {
+        this.evaluation = evaluation;
     }
 
-    public String getComment() {
-        return comment;
+    public String getCommentaire() {
+        return commentaire;
     }
 
-    public void setComment(String comment) {
-        this.comment = comment;
+    public void setCommentaire(String commentaire) {
+        this.commentaire = commentaire;
     }
 }

@@ -31,3 +31,11 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# Fichiers sensibles
+application.properties
+application.yml
+
+# Base de données locale
+*.db
+data/

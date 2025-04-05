@@ -12,18 +12,21 @@ public class Paiement {
     private Long id;
 
     @ManyToOne
-    private Commande order;
+    private Commande commande;
 
-    private LocalDateTime paymentDate;
-    private String paymentMethod;
-    private BigDecimal amount;
+    @Column(name = "date_paiement")
+    private LocalDateTime datePaiement;
 
-    public Paiement(Long id, Commande order, LocalDateTime paymentDate, String paymentMethod, BigDecimal amount) {
+    @Column(name = "methode_paiement")
+    private String methodePaiement;
+    private BigDecimal montant;
+
+    public Paiement(Long id, Commande commande, LocalDateTime datePaiement, String methodePaiement, BigDecimal montant) {
         this.id = id;
-        this.order = order;
-        this.paymentDate = paymentDate;
-        this.paymentMethod = paymentMethod;
-        this.amount = amount;
+        this.commande = commande;
+        this.datePaiement = datePaiement;
+        this.methodePaiement = methodePaiement;
+        this.montant = montant;
     }
 
     public Paiement() {
@@ -37,35 +40,35 @@ public class Paiement {
         this.id = id;
     }
 
-    public Commande getOrder() {
-        return order;
+    public Commande getCommande() {
+        return commande;
     }
 
-    public void setOrder(Commande order) {
-        this.order = order;
+    public void setCommande(Commande commande) {
+        this.commande = commande;
     }
 
-    public LocalDateTime getPaymentDate() {
-        return paymentDate;
+    public LocalDateTime getDatePaiement() {
+        return datePaiement;
     }
 
-    public void setPaymentDate(LocalDateTime paymentDate) {
-        this.paymentDate = paymentDate;
+    public void setDatePaiement(LocalDateTime datePaiement) {
+        this.datePaiement = datePaiement;
     }
 
-    public String getPaymentMethod() {
-        return paymentMethod;
+    public String getMethodePaiement() {
+        return methodePaiement;
     }
 
-    public void setPaymentMethod(String paymentMethod) {
-        this.paymentMethod = paymentMethod;
+    public void setMethodePaiement(String methodePaiement) {
+        this.methodePaiement = methodePaiement;
     }
 
-    public BigDecimal getAmount() {
-        return amount;
+    public BigDecimal getMontant() {
+        return montant;
     }
 
-    public void setAmount(BigDecimal amount) {
-        this.amount = amount;
+    public void setMontant(BigDecimal montant) {
+        this.montant = montant;
     }
 }

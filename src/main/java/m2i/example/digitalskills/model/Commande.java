@@ -16,21 +16,26 @@ public class Commande {
     @ManyToOne
     private Utilisateur user;
 
-    private LocalDateTime orderDate;
+    @Column(name = "date_commande")
+    private LocalDateTime dateCommande;
     private String status;
-    private BigDecimal totalAmount;
-    private String shippingAddress;
+
+    @Column(name = "montant_total")
+    private BigDecimal montantTotal;
+
+    @Column(name = "adresse_livraison", nullable = true)
+    private String adresseLivraison;
 
     @OneToMany(mappedBy = "commande")
     private List<LigneCommande> ligneCommandes = new ArrayList<>();
 
-    public Commande(Long id, Utilisateur user, LocalDateTime orderDate, String status, BigDecimal totalAmount, String shippingAddress, List<LigneCommande> ligneCommandes) {
+    public Commande(Long id, Utilisateur user, LocalDateTime dateCommande, String status, BigDecimal montantTotal, String adresseLivraison, List<LigneCommande> ligneCommandes) {
         this.id = id;
         this.user = user;
-        this.orderDate = orderDate;
+        this.dateCommande = dateCommande;
         this.status = status;
-        this.totalAmount = totalAmount;
-        this.shippingAddress = shippingAddress;
+        this.montantTotal = montantTotal;
+        this.adresseLivraison = adresseLivraison;
         this.ligneCommandes = ligneCommandes;
     }
 
@@ -53,12 +58,12 @@ public class Commande {
         this.user = user;
     }
 
-    public LocalDateTime getOrderDate() {
-        return orderDate;
+    public LocalDateTime getDateCommande() {
+        return dateCommande;
     }
 
-    public void setOrderDate(LocalDateTime orderDate) {
-        this.orderDate = orderDate;
+    public void setDateCommande(LocalDateTime dateCommande) {
+        this.dateCommande = dateCommande;
     }
 
     public String getStatus() {
@@ -69,20 +74,20 @@ public class Commande {
         this.status = status;
     }
 
-    public BigDecimal getTotalAmount() {
-        return totalAmount;
+    public BigDecimal getMontantTotal() {
+        return montantTotal;
     }
 
-    public void setTotalAmount(BigDecimal totalAmount) {
-        this.totalAmount = totalAmount;
+    public void setMontantTotal(BigDecimal montantTotal) {
+        this.montantTotal = montantTotal;
     }
 
-    public String getShippingAddress() {
-        return shippingAddress;
+    public String getAdresseLivraison() {
+        return adresseLivraison;
     }
 
-    public void setShippingAddress(String shippingAddress) {
-        this.shippingAddress = shippingAddress;
+    public void setAdresseLivraison(String adresseLivraison) {
+        this.adresseLivraison = adresseLivraison;
     }
 
     public List<LigneCommande> getLigneCommandes() {

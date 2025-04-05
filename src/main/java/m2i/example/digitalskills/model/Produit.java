@@ -19,19 +19,20 @@ public class Produit {
     private Integer stockQuantity;
 
     @ManyToOne
-    private Categorie category;
+    @JoinColumn(name = "categorie_id")
+    private Categorie categorie;
     private String imageUrl;
 
     @OneToMany(mappedBy = "produit")
     private List<LigneCommande> ligneCommandes = new ArrayList<>();
 
-    public Produit(Long id, String name, String description, BigDecimal price, Integer stockQuantity, Categorie category, String imageUrl, List<LigneCommande> ligneCommandes) {
+    public Produit(Long id, String name, String description, BigDecimal price, Integer stockQuantity, Categorie categorie, String imageUrl, List<LigneCommande> ligneCommandes) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.price = price;
         this.stockQuantity = stockQuantity;
-        this.category = category;
+        this.categorie = categorie;
         this.imageUrl = imageUrl;
         this.ligneCommandes = ligneCommandes;
     }
@@ -80,11 +81,11 @@ public class Produit {
     }
 
     public Categorie getCategory() {
-        return category;
+        return categorie;
     }
 
-    public void setCategory(Categorie category) {
-        this.category = category;
+    public void setCategory(Categorie categorie) {
+        this.categorie = categorie;
     }
 
     public String getImageUrl() {
