@@ -8,7 +8,6 @@ import m2i.example.digitalskills.service.ProduitService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
-import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -40,7 +39,8 @@ public class ProduitController {
             @RequestParam("price") BigDecimal price,
             @RequestParam("stock_quantity") Integer stockQuantity,
             @RequestParam("categoryId") Long categoryId,
-            @RequestParam(value = "imageFile", required = false) MultipartFile imageFile) {
+            @RequestParam(value = "imageFile", required = false) MultipartFile imageFile,
+            @RequestParam(value = "modelFile", required = false) MultipartFile modelFile) {
 
         try {
             // Get category by ID
@@ -69,6 +69,29 @@ public class ProduitController {
                 imagePath = "/uploads/" + uniqueFileName;
             }
 
+            //Handle model file
+            String modelPath = null;
+            if (modelFile != null && !modelFile.isEmpty()) {
+                // Create unique filename
+                String fileName = StringUtils.cleanPath(modelFile.getOriginalFilename());
+                String uniqueFileName = System.currentTimeMillis() + "_" + fileName;
+
+                // Path where to save the image
+                Path uploadPath = Paths.get("uploads");
+
+                // Create directory if it doesn't exist
+                if (!Files.exists(uploadPath)) {
+                    Files.createDirectories(uploadPath);
+                }
+
+                // Save the file
+                Path filePath = uploadPath.resolve(uniqueFileName);
+                Files.copy(modelFile.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+
+                // Store the relative path
+                modelPath = "/uploads/" + uniqueFileName;
+            }
+
             // Create and save product
             Produit produit = new Produit();
             produit.setName(name);
@@ -77,6 +100,7 @@ public class ProduitController {
             produit.setStockQuantity(stockQuantity);
             produit.setCategory(category);
             produit.setImageUrl(imagePath);
+            produit.setModelUrl(modelPath);
 
             Produit savedProduit = produitService.createProduit(produit);
 
@@ -89,9 +113,94 @@ public class ProduitController {
         }
     }
 
-    @PutMapping
-    public ResponseEntity<Produit> updateProduit(@RequestBody Produit produit){
-        return new ResponseEntity<>(produitService.updateProduit(produit), HttpStatus.CREATED);
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateProduit(
+            @PathVariable Long id,
+            @RequestParam("name") String name,
+            @RequestParam("description") String description,
+            @RequestParam("price") BigDecimal price,
+            @RequestParam("stock_quantity") Integer stockQuantity,
+            @RequestParam("categoryId") Long categoryId,
+            @RequestParam(value = "imageFile", required = false) MultipartFile imageFile,
+            @RequestParam(value = "modelFile", required = false) MultipartFile modelFile) {
+
+        try {
+            // Vérifier si le produit existe
+            Produit existingProduit = produitService.findOne(id);
+            if (existingProduit == null) {
+                Map<String, String> response = new HashMap<>();
+                response.put("message", "Produit non trouvé avec l'ID: " + id);
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+            }
+
+            // Get category by ID
+            Categorie category = categorieService.findOne(categoryId);
+
+            // Handle image file - seulement si un nouveau fichier est fourni
+            String imagePath = existingProduit.getImageUrl(); // Conserver l'ancienne image par défaut
+            if (imageFile != null && !imageFile.isEmpty()) {
+                // Create unique filename
+                String fileName = StringUtils.cleanPath(imageFile.getOriginalFilename());
+                String uniqueFileName = System.currentTimeMillis() + "_" + fileName;
+
+                // Path where to save the image
+                Path uploadPath = Paths.get("uploads");
+
+                // Create directory if it doesn't exist
+                if (!Files.exists(uploadPath)) {
+                    Files.createDirectories(uploadPath);
+                }
+
+                // Save the file
+                Path filePath = uploadPath.resolve(uniqueFileName);
+                Files.copy(imageFile.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+
+                // Store the relative path
+                imagePath = "/uploads/" + uniqueFileName;
+            }
+
+            // Handle model file - seulement si un nouveau fichier est fourni
+            String modelPath = existingProduit.getModelUrl(); // Conserver l'ancien modèle par défaut
+            if (modelFile != null && !modelFile.isEmpty()) {
+                // Create unique filename
+                String fileName = StringUtils.cleanPath(modelFile.getOriginalFilename());
+                String uniqueFileName = System.currentTimeMillis() + "_" + fileName;
+
+                // Path where to save the file
+                Path uploadPath = Paths.get("uploads");
+
+                // Create directory if it doesn't exist
+                if (!Files.exists(uploadPath)) {
+                    Files.createDirectories(uploadPath);
+                }
+
+                // Save the file
+                Path filePath = uploadPath.resolve(uniqueFileName);
+                Files.copy(modelFile.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+
+                // Store the relative path
+                modelPath = "/uploads/" + uniqueFileName;
+            }
+
+            // Mettre à jour les propriétés du produit existant
+            existingProduit.setName(name);
+            existingProduit.setDescription(description);
+            existingProduit.setPrice(price);
+            existingProduit.setStockQuantity(stockQuantity);
+            existingProduit.setCategory(category);
+            existingProduit.setImageUrl(imagePath);
+            existingProduit.setModelUrl(modelPath);
+
+            // Sauvegarder les modifications
+            Produit updatedProduit = produitService.updateProduit(existingProduit);
+
+            return ResponseEntity.ok().body(updatedProduit);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "Erreur lors de la modification du produit: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
     }
 
     @DeleteMapping
