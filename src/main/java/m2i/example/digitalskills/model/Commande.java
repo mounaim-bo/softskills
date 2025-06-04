@@ -1,5 +1,6 @@
 package m2i.example.digitalskills.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
@@ -14,7 +15,8 @@ public class Commande {
     private Long id;
 
     @ManyToOne
-    private Utilisateur user;
+    @Column(name = "client_id")
+    private Client client;
 
     @Column(name = "date_commande")
     private LocalDateTime dateCommande;
@@ -29,9 +31,9 @@ public class Commande {
     @OneToMany(mappedBy = "commande")
     private List<LigneCommande> ligneCommandes = new ArrayList<>();
 
-    public Commande(Long id, Utilisateur user, LocalDateTime dateCommande, String status, BigDecimal montantTotal, String adresseLivraison, List<LigneCommande> ligneCommandes) {
+    public Commande(Long id, Client client, LocalDateTime dateCommande, String status, BigDecimal montantTotal, String adresseLivraison, List<LigneCommande> ligneCommandes) {
         this.id = id;
-        this.user = user;
+        this.client = client;
         this.dateCommande = dateCommande;
         this.status = status;
         this.montantTotal = montantTotal;
@@ -50,12 +52,12 @@ public class Commande {
         this.id = id;
     }
 
-    public Utilisateur getUser() {
-        return user;
+    public Client getClient() {
+        return client;
     }
 
-    public void setUser(Utilisateur user) {
-        this.user = user;
+    public void setClient(Client client) {
+        this.client = client;
     }
 
     public LocalDateTime getDateCommande() {
@@ -97,4 +99,15 @@ public class Commande {
     public void setLigneCommandes(List<LigneCommande> ligneCommandes) {
         this.ligneCommandes = ligneCommandes;
     }
+
+    public void ajouterLigne(LigneCommande ligne) {
+        ligneCommandes.add(ligne);
+        ligne.setCommande(this);
+    }
+
+    public void supprimerLigne(LigneCommande ligne) {
+        ligneCommandes.remove(ligne);
+        ligne.setCommande(null);
+    }
+
 }

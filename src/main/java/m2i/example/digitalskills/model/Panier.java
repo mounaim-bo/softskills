@@ -3,6 +3,7 @@ package m2i.example.digitalskills.model;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -12,20 +13,27 @@ public class Panier {
     private Long id;
 
     @ManyToOne
-    private Utilisateur user;
+    private Client client;
 
     @OneToMany
     private List<Produit> produits;
+
+    @OneToMany(mappedBy = "panier", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<LignePanier> lignes;
 
     @Column(name = "prix_total")
 
     private BigDecimal prixTotal;
 
-    public Panier(Long id, Utilisateur user, List<Produit> produits, BigDecimal prixTotal) {
+    @Column(name = "date_ajout")
+    private LocalDateTime dateAjout;
+
+    public Panier(Long id, Client client, List<Produit> produits, BigDecimal prixTotal, LocalDateTime dateAjout) {
         this.id = id;
-        this.user = user;
+        this.client = client;
         this.produits = produits;
         this.prixTotal = prixTotal;
+        this.dateAjout = dateAjout;
     }
 
     public Panier() {
@@ -39,12 +47,12 @@ public class Panier {
         this.id = id;
     }
 
-    public Utilisateur getUser() {
-        return user;
+    public Client getClient() {
+        return client;
     }
 
-    public void setUser(Utilisateur user) {
-        this.user = user;
+    public void setClient(Client client) {
+        this.client = client;
     }
 
     public List<Produit> getProduits() {
@@ -62,4 +70,23 @@ public class Panier {
     public void setPrixTotal(BigDecimal prixTotal) {
         this.prixTotal = prixTotal;
     }
+
+    public LocalDateTime getDateAjout() {
+        return dateAjout;
+    }
+
+    public void setDateAjout(LocalDateTime dateAjout) {
+        this.dateAjout = dateAjout;
+    }
+
+    public void ajouterLigne(LignePanier ligne) {
+        lignes.add(ligne);
+        ligne.setPanier(this);
+    }
+
+    public void supprimerLigne(LignePanier ligne) {
+        lignes.remove(ligne);
+        ligne.setPanier(null);
+    }
+
 }

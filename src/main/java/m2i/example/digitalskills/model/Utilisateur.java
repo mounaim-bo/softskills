@@ -24,9 +24,6 @@ public class Utilisateur {
     @Column(name = "phone_number")
     private String phoneNumber;
 
-    @OneToMany
-    private List<Commande> commandes;
-
     public Utilisateur(Long id, String username, String password, String role, String firstName, String lastName, String address, String phoneNumber) {
         this.id = id;
         this.username = username;
@@ -105,11 +102,4 @@ public class Utilisateur {
         this.phoneNumber = phoneNumber;
     }
 
-    public List<Commande> getCommandes() {
-        return commandes;
-    }
-
-    public void setCommandes(List<Commande> commandes) {
-        this.commandes = commandes;
-    }
 }
