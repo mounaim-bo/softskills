@@ -14,10 +14,13 @@ public class Categorie {
     private String name;
     private String description;
 
-    public Categorie(Long id, String name, String description) {
+    private String couleur;
+
+    public Categorie(Long id, String name, String description, String couleur) {
         this.id = id;
         this.name = name;
         this.description = description;
+        this.couleur = couleur;
     }
 
     public Categorie() {
@@ -45,5 +48,13 @@ public class Categorie {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getCouleur() {
+        return couleur;
+    }
+
+    public void setCouleur(String couleur) {
+        this.couleur = couleur;
     }
 }

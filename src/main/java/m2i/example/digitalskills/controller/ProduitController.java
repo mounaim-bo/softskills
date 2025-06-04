@@ -36,7 +36,7 @@ public class ProduitController {
     public ResponseEntity<?> createProduit(
             @RequestParam("name") String name,
             @RequestParam("description") String description,
-            @RequestParam("price") BigDecimal price,
+            @RequestParam("prix") BigDecimal prix,
             @RequestParam("stock_quantity") Integer stockQuantity,
             @RequestParam("categoryId") Long categoryId,
             @RequestParam(value = "imageFile", required = false) MultipartFile imageFile,
@@ -96,7 +96,7 @@ public class ProduitController {
             Produit produit = new Produit();
             produit.setName(name);
             produit.setDescription(description);
-            produit.setPrice(price);
+            produit.setPrix(prix);
             produit.setStockQuantity(stockQuantity);
             produit.setCategory(category);
             produit.setImageUrl(imagePath);
@@ -118,7 +118,7 @@ public class ProduitController {
             @PathVariable Long id,
             @RequestParam("name") String name,
             @RequestParam("description") String description,
-            @RequestParam("price") BigDecimal price,
+            @RequestParam("prix") BigDecimal prix,
             @RequestParam("stock_quantity") Integer stockQuantity,
             @RequestParam("categoryId") Long categoryId,
             @RequestParam(value = "imageFile", required = false) MultipartFile imageFile,
@@ -185,7 +185,7 @@ public class ProduitController {
             // Mettre à jour les propriétés du produit existant
             existingProduit.setName(name);
             existingProduit.setDescription(description);
-            existingProduit.setPrice(price);
+            existingProduit.setPrix(prix);
             existingProduit.setStockQuantity(stockQuantity);
             existingProduit.setCategory(category);
             existingProduit.setImageUrl(imagePath);

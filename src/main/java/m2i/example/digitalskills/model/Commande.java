@@ -15,7 +15,7 @@ public class Commande {
     private Long id;
 
     @ManyToOne
-    @Column(name = "client_id")
+    @JoinColumn(name = "client_id")
     private Client client;
 
     @Column(name = "date_commande")
@@ -28,7 +28,7 @@ public class Commande {
     @Column(name = "adresse_livraison", nullable = true)
     private String adresseLivraison;
 
-    @OneToMany(mappedBy = "commande")
+    @OneToMany(mappedBy = "commande", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<LigneCommande> ligneCommandes = new ArrayList<>();
 
     public Commande(Long id, Client client, LocalDateTime dateCommande, String status, BigDecimal montantTotal, String adresseLivraison, List<LigneCommande> ligneCommandes) {

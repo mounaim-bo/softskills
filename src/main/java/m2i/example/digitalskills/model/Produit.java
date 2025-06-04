@@ -15,7 +15,7 @@ public class Produit {
 
     private String name;
     private String description;
-    private BigDecimal price;
+    private BigDecimal prix;
     private Integer stockQuantity;
     @ManyToOne
     @JoinColumn(name = "categorie_id")
@@ -27,11 +27,11 @@ public class Produit {
     @OneToMany(mappedBy = "produit")
     private List<LigneCommande> ligneCommandes = new ArrayList<>();
 
-    public Produit(Long id, String name, String description, BigDecimal price, Integer stockQuantity, Categorie categorie, String imageUrl, List<LigneCommande> ligneCommandes, String modelUrl) {
+    public Produit(Long id, String name, String description, BigDecimal prix, Integer stockQuantity, Categorie categorie, String imageUrl, List<LigneCommande> ligneCommandes, String modelUrl) {
         this.id = id;
         this.name = name;
         this.description = description;
-        this.price = price;
+        this.prix = prix;
         this.stockQuantity = stockQuantity;
         this.categorie = categorie;
         this.imageUrl = imageUrl;
@@ -66,12 +66,12 @@ public class Produit {
         this.description = description;
     }
 
-    public BigDecimal getPrice() {
-        return price;
+    public BigDecimal getPrix() {
+        return prix;
     }
 
-    public void setPrice(BigDecimal price) {
-        this.price = price;
+    public void setPrix(BigDecimal prix) {
+        this.prix = prix;
     }
 
     public Integer getStockQuantity() {
